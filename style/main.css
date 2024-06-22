@@ -107,10 +107,10 @@ h1.title {
   animation-fill-mode: both;
 }
 .score-container:after {
-  content: "Score";
+  content: "نمره";
 }
 .best-container:after {
-  content: "Best";
+  content: "بهترین";
 }
 p {
   margin-top: 0;
