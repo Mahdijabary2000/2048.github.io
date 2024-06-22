@@ -1,20 +1,38 @@
-@import "helpers";
+@use "sass:color";
+@use "sass:list";
+@use "sass:math";
+@use "helpers";
 @import "fonts/clear-sans.css";
 
 $field-width: 500px;
 $grid-spacing: 15px;
 $grid-row-cells: 4;
-$tile-size: ($field-width - $grid-spacing * ($grid-row-cells + 1)) / $grid-row-cells;
+$tile-size: math.div(($field-width - $grid-spacing * ($grid-row-cells + 1)), $grid-row-cells);
 $tile-border-radius: 3px;
 
-$mobile-threshold: $field-width + 20px;
+// Tablets and Desktops
+$mobile-threshold-max: 520px;
+// Nokia N9
+$mobile-threshold-480px: 480px;
+// iPhone 14 Pro Max
+$mobile-threshold-414px: 414px;
+// iPhone SE
+$mobile-threshold-375px: 375px;
+// Samsung Galaxy S9+
+$mobile-threshold-320px: 320px;
+// iPhone SE
+$mobile-threshold-375px: 375px;
+// Samsung Galaxy Fold
+$mobile-threshold-280px: 280px;
+// JioPhone
+$mobile-threshold-240px: 240px;
 
 $text-color: #776E65;
 $bright-text-color: #f9f6f2;
 
 $tile-color: #eee4da;
 $tile-gold-color: #edc22e;
-$tile-gold-glow-color: lighten($tile-gold-color, 15%);
+$tile-gold-glow-color: color.adjust($tile-gold-color, $lightness: 15%);
 
 $game-container-margin-top: 40px;
 $game-container-background: #bbada0;
@@ -22,6 +40,9 @@ $game-container-background: #bbada0;
 $transition-speed: 100ms;
 
 html, body {
+  height: 100vh;
+  overflow-y: scroll;
+
   margin: 0;
   padding: 0;
 
@@ -32,22 +53,23 @@ html, body {
 }
 
 body {
-  margin: 80px 0;
+  margin: 40px 0;
 }
 
 .heading {
-  @include clearfix;
+  @include helpers.clearfix;
+  margin-bottom: 20px;
 }
 
 h1.title {
-  font-size: 80px;
+  font-size: 50px;
   font-weight: bold;
   margin: 0;
   display: block;
   float: left;
 }
 
-@include keyframes(move-up) {
+@include helpers.keyframes(move-up) {
   0% {
     top: 25px;
     opacity: 1;
@@ -101,8 +123,8 @@ h1.title {
     font-weight: bold;
     color: rgba($text-color, .9);
     z-index: 100;
-    @include animation(move-up 600ms ease-in);
-    @include animation-fill-mode(both);
+    @include helpers.animation(move-up 600ms ease-in);
+    @include helpers.animation-fill-mode(both);
   }
 }
 
@@ -135,7 +157,7 @@ strong {
 
 hr {
   border: none;
-  border-bottom: 1px solid lighten($text-color, 40%);
+  border-bottom: 1px solid color.adjust($text-color, $lightness: 40%);
   margin-top: 20px;
   margin-bottom: 30px;
 }
@@ -145,7 +167,7 @@ hr {
   margin: 0 auto;
 }
 
-@include keyframes(fade-in) {
+@include helpers.keyframes(fade-in) {
   0% {
     opacity: 0;
   }
@@ -158,7 +180,7 @@ hr {
 // Styles for buttons
 @mixin button {
   display: inline-block;
-  background: darken($game-container-background, 20%);
+  background: color.adjust($game-container-background, $lightness: -20%);
   border-radius: 3px;
   padding: 0 20px;
   text-decoration: none;
@@ -226,21 +248,21 @@ hr {
         margin-left: 9px;
         // margin-top: 59px;
 
-	&.keep-playing-button {
-	  display: none;
-	}
+        &.keep-playing-button {
+          display: none;
+        }
       }
 
-      @include animation(fade-in 800ms ease $transition-speed * 12);
-      @include animation-fill-mode(both);
+      @include helpers.animation(fade-in 800ms ease $transition-speed * 12);
+      @include helpers.animation-fill-mode(both);
 
       &.game-won {
         background: rgba($tile-gold-color, .5);
         color: $bright-text-color;
 
-	a.keep-playing-button {
-	  display: inline-block;
-	}
+        a.keep-playing-button {
+          display: inline-block;
+        }
       }
 
       &.game-won, &.game-over {
@@ -290,18 +312,18 @@ hr {
 
   .tile {
     &, .tile-inner {
-      width: ceil($tile-size);
-      height: ceil($tile-size);
-      line-height: ceil($tile-size);
+      width: math.ceil($tile-size);
+      height: math.ceil($tile-size);
+      line-height: math.ceil($tile-size);
     }
 
     // Build position classes
     @for $x from 1 through $grid-row-cells {
       @for $y from 1 through $grid-row-cells {
         &.tile-position-#{$x}-#{$y} {
-          $xPos: floor(($tile-size + $grid-spacing) * ($x - 1));
-          $yPos: floor(($tile-size + $grid-spacing) * ($y - 1));
-          @include transform(translate($xPos, $yPos));
+          $xPos: math.floor(($tile-size + $grid-spacing) * ($x - 1));
+          $yPos: math.floor(($tile-size + $grid-spacing) * ($y - 1));
+          @include helpers.transform(translate($xPos, $yPos));
         }
       }
     }
@@ -326,7 +348,7 @@ hr {
   }
 
   // Movement transition
-  @include transition($transition-speed ease-in-out);
+  @include helpers.transition($transition-speed ease-in-out);
   -webkit-transition-property: -webkit-transform;
   -moz-transition-property: -moz-transform;
   transition-property: transform;
@@ -336,34 +358,34 @@ hr {
   $limit: 11;
 
   // Colors for all 11 states, false = no special color
-  $special-colors: false false, // 2
-                   false false, // 4
-                   #f78e48 true, // 8
-                   #fc5e2e true, // 16
-                   #ff3333 true, // 32
-                   #ff0000 true, // 64
-                   false true, // 128
-                   false true, // 256
-                   false true, // 512
-                   false true, // 1024
-                   false true; // 2048
+  $special-colors:  false false, // 2
+                    false false, // 4
+                    #f78e48 true, // 8
+                    #fc5e2e true, // 16
+                    #ff3333 true, // 32
+                    #ff0000 true, // 64
+                    false true, // 128
+                    false true, // 256
+                    false true, // 512
+                    false true, // 1024
+                    false true; // 2048
 
   // Build tile colors
   @while $exponent <= $limit {
-    $power: pow($base, $exponent);
+    $power: helpers.pow($base, $exponent);
 
     &.tile-#{$power} .tile-inner {
       // Calculate base background color
-      $gold-percent: ($exponent - 1) / ($limit - 1) * 100;
-      $mixed-background: mix($tile-gold-color, $tile-color, $gold-percent);
+      $gold-percent: math.div($exponent - 1, $limit - 1) * 100 * 1%;
+      $mixed-background: color.mix($tile-gold-color, $tile-color, $gold-percent);
 
-      $nth-color: nth($special-colors, $exponent);
+      $nth-color: list.nth($special-colors, $exponent);
 
-      $special-background: nth($nth-color, 1);
-      $bright-color: nth($nth-color, 2);
+      $special-background: list.nth($nth-color, 1);
+      $bright-color: list.nth($nth-color, 2);
 
       @if $special-background {
-        $mixed-background: mix($special-background, $mixed-background, 55%);
+        $mixed-background: color.mix($special-background, $mixed-background, 55%);
       }
 
       @if $bright-color {
@@ -374,11 +396,11 @@ hr {
       background: $mixed-background;
 
       // Add glow
-      $glow-opacity: max($exponent - 4, 0) / ($limit - 4);
+      $glow-opacity: math.div(math.max($exponent - 4, 0), ($limit - 4));
 
       @if not $special-background {
-        box-shadow: 0 0 30px 10px rgba($tile-gold-glow-color, $glow-opacity / 1.8),
-                    inset 0 0 0 1px rgba(white, $glow-opacity / 3);
+        box-shadow: 0 0 30px 10px rgba($tile-gold-glow-color, math.div($glow-opacity, 1.8)),
+        inset 0 0 0 1px rgba(white, math.div($glow-opacity, 3));
       }
 
       // Adjust font size for bigger numbers
@@ -386,13 +408,13 @@ hr {
         font-size: 45px;
 
         // Media queries placed here to avoid carrying over the rest of the logic
-        @include smaller($mobile-threshold) {
+        @include helpers.smaller($mobile-threshold-max) {
           font-size: 25px;
         }
       } @else if $power >= 1000 {
         font-size: 35px;
 
-        @include smaller($mobile-threshold) {
+        @include helpers.smaller($mobile-threshold-max) {
           font-size: 15px;
         }
       }
@@ -404,55 +426,55 @@ hr {
   // Super tiles (above 2048)
   &.tile-super .tile-inner {
     color: $bright-text-color;
-    background: mix(#333, $tile-gold-color, 95%);
+    background: color.mix(#333, $tile-gold-color, 95%);
 
     font-size: 30px;
 
-    @include smaller($mobile-threshold) {
+    @include helpers.smaller($mobile-threshold-max) {
       font-size: 10px;
     }
   }
 }
 
-@include keyframes(appear) {
+@include helpers.keyframes(appear) {
   0% {
     opacity: 0;
-    @include transform(scale(0));
+    @include helpers.transform(scale(0));
   }
 
   100% {
     opacity: 1;
-    @include transform(scale(1));
+    @include helpers.transform(scale(1));
   }
 }
 
 .tile-new .tile-inner {
-  @include animation(appear 200ms ease $transition-speed);
-  @include animation-fill-mode(backwards);
+  @include helpers.animation(appear 200ms ease $transition-speed);
+  @include helpers.animation-fill-mode(backwards);
 }
 
-@include keyframes(pop) {
+@include helpers.keyframes(pop) {
   0% {
-    @include transform(scale(0));
+    @include helpers.transform(scale(0));
   }
 
   50% {
-    @include transform(scale(1.2));
+    @include helpers.transform(scale(1.2));
   }
 
   100% {
-    @include transform(scale(1));
+    @include helpers.transform(scale(1));
   }
 }
 
 .tile-merged .tile-inner {
   z-index: 20;
-  @include animation(pop 200ms ease $transition-speed);
-  @include animation-fill-mode(backwards);
+  @include helpers.animation(pop 200ms ease $transition-speed);
+  @include helpers.animation-fill-mode(backwards);
 }
 
 .above-game {
-  @include clearfix;
+  @include helpers.clearfix;
 }
 
 .game-intro {
@@ -468,18 +490,14 @@ hr {
   float: right;
 }
 
-.game-explanation {
-  margin-top: 50px;
-}
-
-@include smaller($mobile-threshold) {
+@include helpers.smaller($mobile-threshold-max) {
   // Redefine variables for smaller screens
-  $field-width: 280px;
-  $grid-spacing: 10px;
-  $grid-row-cells: 4;
-  $tile-size: ($field-width - $grid-spacing * ($grid-row-cells + 1)) / $grid-row-cells;
-  $tile-border-radius: 3px;
-  $game-container-margin-top: 17px;
+  $field-width: 480px !global;
+  $grid-spacing: 10px !global;
+  $grid-row-cells: 4 !global;
+  $tile-size: math.div(($field-width - $grid-spacing * ($grid-row-cells + 1)), $grid-row-cells) !global;
+  $tile-border-radius: 3px !global;
+  $game-container-margin-top: 17px !global;
 
   html, body {
     font-size: 15px;
@@ -487,12 +505,12 @@ hr {
 
   body {
     margin: 20px 0;
-    padding: 0 20px;
+    padding: 0;
   }
 
   h1.title {
     font-size: 27px;
-    margin-top: 15px;
+    margin-top: 10px;
   }
 
   .container {
@@ -504,10 +522,6 @@ hr {
     margin-top: 0;
     padding: 15px 10px;
     min-width: 40px;
-  }
-
-  .heading {
-    margin-bottom: 10px;
   }
 
   // Show intro and restart button side by side
@@ -544,6 +558,137 @@ hr {
 
     .lower {
       margin-top: 30px !important;
+    }
+  }
+}
+
+@include helpers.smaller($mobile-threshold-480px) {
+  // Redefine variables for smaller screens
+  $field-width: 415px !global;
+  $grid-spacing: 10px !global;
+  $grid-row-cells: 4 !global;
+  $tile-size: math.div(($field-width - $grid-spacing * ($grid-row-cells + 1)), $grid-row-cells) !global;
+
+  .container {
+    width: $field-width;
+    margin: 0 auto;
+  }
+
+  // Render the game field at the right width
+  @include game-field;
+}
+
+@include helpers.smaller($mobile-threshold-414px) {
+  // Redefine variables for smaller screens
+  $field-width: 376px !global;
+  $grid-spacing: 10px !global;
+  $grid-row-cells: 4 !global;
+  $tile-size: math.div(($field-width - $grid-spacing * ($grid-row-cells + 1)), $grid-row-cells) !global;
+
+  .container {
+    width: $field-width;
+    margin: 0 auto;
+  }
+
+  // Render the game field at the right width
+  @include game-field;
+}
+
+@include helpers.smaller($mobile-threshold-375px) {
+  // Redefine variables for smaller screens
+  $field-width: 321px !global;
+  $grid-spacing: 10px !global;
+  $grid-row-cells: 4 !global;
+  $tile-size: math.div(($field-width - $grid-spacing * ($grid-row-cells + 1)), $grid-row-cells) !global;
+
+  .container {
+    width: $field-width;
+    margin: 0 auto;
+  }
+
+  // Render the game field at the right width
+  @include game-field;
+}
+
+@include helpers.smaller($mobile-threshold-320px) {
+  // Redefine variables for smaller screens
+  $field-width: 280px !global;
+  $grid-spacing: 10px !global;
+  $grid-row-cells: 4 !global;
+  $tile-size: math.div(($field-width - $grid-spacing * ($grid-row-cells + 1)), $grid-row-cells) !global;
+
+  .container {
+    width: $field-width;
+    margin: 0 auto;
+  }
+
+  // Render the game field at the right width
+  @include game-field;
+}
+
+@include helpers.smaller($mobile-threshold-280px) {
+  // Redefine variables for smaller screens
+  $field-width: 240px !global;
+  $grid-spacing: 10px !global;
+  $grid-row-cells: 4 !global;
+  $tile-size: math.div(($field-width - $grid-spacing * ($grid-row-cells + 1)), $grid-row-cells) !global;
+
+  html, body {
+    font-size: 10px;
+  }
+
+  h1.title {
+    font-size: 22px;
+    margin-top: 10px;
+  }
+
+  .container {
+    width: $field-width;
+    margin: 0 auto;
+  }
+
+  .score-container, .best-container {
+    $height: 20px;
+    font-size: $height;
+    height: $height;
+    line-height: $height + 22px;
+  }
+
+  // Render the game field at the right width
+  @include game-field;
+}
+
+@include helpers.smaller($mobile-threshold-240px) {
+  // Redefine variables for smaller screens
+  $field-width: 200px !global;
+  $grid-spacing: 10px !global;
+  $grid-row-cells: 4 !global;
+  $tile-size: math.div(($field-width - $grid-spacing * ($grid-row-cells + 1)), $grid-row-cells) !global;
+
+  .container {
+    width: $field-width;
+    margin: 0 auto;
+  }
+
+  // Render the game field at the right width
+  @include game-field;
+
+  // Rest of the font-size adjustments in the tile class
+  .tile.tile-64 {
+    & .tile-inner {
+      font-size: 25px;
+    }
+  }
+
+  .tile.tile-128, .tile.tile-256, .tile.tile-512 {
+    & .tile-inner {
+      font-size: 18px;
+    }
+  }
+
+  .tile.tile-1024, .tile.tile-2048 {
+    & .tile-inner {
+      font-size: 13px;
     }
   }
 }
