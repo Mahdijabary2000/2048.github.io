@@ -4,7 +4,7 @@ html, body {
   padding: 0;
   background: #faf8ef;
   color: #776e65;
-  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Vazirmatn FD", "Helvetica Neue", Arial, sans-serif;
   font-size: 18px; }
 
 body {
@@ -90,10 +90,10 @@ h1.title {
     animation-fill-mode: both; }
 
 .score-container:after {
-  content: "Score"; }
+  content: "نمره"; }
 
 .best-container:after {
-  content: "Best"; }
+  content: "بهترین"; }
 
 p {
   margin-top: 0;
@@ -506,29 +506,41 @@ hr {
   -webkit-animation-fill-mode: backwards;
   -moz-animation-fill-mode: backwards;
   animation-fill-mode: backwards; }
-
-.above-game:after {
+.above-game{
+  display: flex;
+  justify-content: space-between;
+/* gap: 0px; */
+width: 100%;
+}
+/* .above-game:after {
   content: "";
   display: block;
-  clear: both; }
+  clear: both; } */
 
 .game-intro {
-  float: left;
+  /* float: left; */
   line-height: 42px;
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  font-size: 20px;
+  /* margin-right: 0px; */
+ }
 
 .restart-button {
-  display: inline-block;
+  /* display: inline-block; */
   background: #8f7a66;
   border-radius: 3px;
-  padding: 0 20px;
+  /* padding: 0 20px; */
+  width: 100px;
   text-decoration: none;
   color: #f9f6f2;
   height: 40px;
   line-height: 42px;
   display: block;
   text-align: center;
-  float: right; }
+  margin-right: 0px;
+  /* margin-left: 100px; */
+  /* float: right;  */
+}
 
 .game-explanation {
   margin-top: 50px; }

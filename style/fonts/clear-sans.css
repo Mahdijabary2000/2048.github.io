@@ -1,30 +1,56 @@
+
 @font-face {
-    font-family: "Clear Sans";
-    src: url("ClearSans-Light-webfont.eot");
-    src: url("ClearSans-Light-webfont.eot?#iefix") format("embedded-opentype"),
-         url("ClearSans-Light-webfont.svg#clear_sans_lightregular") format("svg"),
-         url("ClearSans-Light-webfont.woff") format("woff");
-    font-weight: 200;
-    font-style: normal;
+  font-family: Vazirmatn FD;
+  font-style: normal;
+  font-weight: 100;
+  src: url("../fonts/Vazirmatn-FD-Thin.woff2") format("woff2");
+}
+@font-face {
+  font-family: Vazirmatn FD;
+  font-style: normal;
+  font-weight: 300;
+  src: url("../fonts/Vazirmatn-FD-Light.woff2") format("woff2");
 }
 
 @font-face {
-    font-family: "Clear Sans";
-    src: url("ClearSans-Regular-webfont.eot");
-    src: url("ClearSans-Regular-webfont.eot?#iefix") format("embedded-opentype"),
-         url("ClearSans-Regular-webfont.svg#clear_sansregular") format("svg"),
-         url("ClearSans-Regular-webfont.woff") format("woff");
-    font-weight: normal;
-    font-style: normal;
+  font-family: Vazirmatn FD;
+  font-style: normal;
+  font-weight: normal;
+  src: url("../fonts/Vazirmatn-FD-Regular.woff2") format("woff2");
 }
 
 @font-face {
-    font-family: "Clear Sans";
-    src: url("ClearSans-Bold-webfont.eot");
-    src: url("ClearSans-Bold-webfont.eot?#iefix") format("embedded-opentype"),
-         url("ClearSans-Bold-webfont.svg#clear_sansbold") format("svg"),
-         url("ClearSans-Bold-webfont.woff") format("woff");
-    font-weight: 700;
-    font-style: normal;
+  font-family: Vazirmatn FD;
+  font-style: normal;
+  font-weight: 600;
+  src: url("../fonts/Vazirmatn-FD-SemiBold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Vazirmatn FD;
+  font-style: normal;
+  font-weight: bold;
+  src: url("../fonts/Vazirmatn-FD-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Vazirmatn FD;
+  font-style: normal;
+  font-weight: 800;
+  src: url("../fonts/Vazirmatn-FD-ExtraBold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Vazirmatn FD;
+  font-style: normal;
+  font-weight: 900;
+  src: url("../fonts/Vazirmatn-FD-Black.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Vazirmatn FD;
+  font-style: normal;
+  font-weight: 950;
+  src: url("../fonts/Vazirmatn-FD-Black.woff2") format("woff2");
 }
 
